@@ -10,7 +10,7 @@ import (
 	"github.com/lrstanley/girc"
 )
 
-const logFilename = "irc_log.txt"
+const logFilename = "logs/irc_log.txt"
 
 func main() {
 	channel := os.Getenv("IRC_CHANNEL")
