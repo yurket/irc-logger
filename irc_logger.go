@@ -47,10 +47,20 @@ func main() {
 	http.HandleFunc("/", basicAuth(displayLogs, httpUsername, httpPassword, "Please enter your username and password"))
 	go http.ListenAndServe(fmt.Sprintf(":%s", httpPort), nil)
 
-	if err := client.Connect(); err != nil {
-		log.Fatalf("Failed to connect: %s", err)
+	// Handle reconnections
+	for {
+		if err := client.Connect(); err != nil {
+			log.Printf("Failed to connect: %s\n", err)
+
+			var sleepTime time.Duration = 30
+			log.Printf("Reconnecting in %d seconds...\n", sleepTime*time.Second)
+			time.Sleep(sleepTime * time.Second)
+		} else {
+
+			log.Println("Quitting")
+			return
+		}
 	}
-	log.Printf("Successfully connected to %s on %s", channel, server)
 }
 
 func basicAuth(handler http.HandlerFunc, username, password, realm string) http.HandlerFunc {

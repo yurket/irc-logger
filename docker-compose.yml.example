@@ -6,6 +6,7 @@ services:
       - ./logs:/app/logs
     ports:
       - "8080:8080"
+    restart: unless-stopped
     environment:
       IRC_CHANNEL: "#YourChannel"
       IRC_SERVER: "irc.byteirc.org"
